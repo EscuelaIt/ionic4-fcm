@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "16022637052",
+    "firebase_url": "https://ionic4-fcm.firebaseio.com",
+    "project_id": "ionic4-fcm",
+    "storage_bucket": "ionic4-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16022637052:android:865f1b24b97ceff4",
+        "android_client_info": {
+          "package_name": "app.ionic.escuelait"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16022637052-7u903f9j1i3cocp367dg4h8r32qd8qqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCACkfMyjcfuCM3dsMVF-tVvhNkWRfxntc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
