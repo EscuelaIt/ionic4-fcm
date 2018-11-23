@@ -17,13 +17,13 @@ export class FcmService {
     this.devicesCollection = this.db.collection('devices');
   }
 
-  async getToken() {
+  async getToken(userId: string) {
     const token = await this.firebase.getToken();
-    console.log(token);
     const newDevice = {
       token,
-      userId: 123
+      userId
     };
+    console.log(newDevice);
     this.devicesCollection.add(newDevice);
   }
 }

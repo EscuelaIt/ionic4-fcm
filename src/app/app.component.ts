@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,10 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private auth: AuthService,
+    private navCtrl: NavController,
+    private menuCtrl: MenuController,
   ) {
     this.initializeApp();
   }
@@ -44,6 +49,25 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.listenAuthState();
+    });
+  }
+
+  async logout() {
+    await this.auth.logout();
+    this.navCtrl.navigateRoot('login');
+  }
+
+  listenAuthState() {
+    this.auth.getAuthState()
+    .subscribe(session => {
+      console.log(session);
+      let enable = false;
+      if (session !== null) {
+        enable = true;
+        this.navCtrl.navigateRoot('schedule');
+      }
+      this.menuCtrl.enable(enable);
     });
   }
 }
