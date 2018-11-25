@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
-import { Platform, NavController, MenuController } from '@ionic/angular';
+import { Platform, NavController, MenuController, ToastController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AuthService } from './services/auth.service';
+import { FcmService } from './services/fcm.service';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,8 @@ export class AppComponent {
     private auth: AuthService,
     private navCtrl: NavController,
     private menuCtrl: MenuController,
+    private toastCtrl: ToastController,
+    private fcm: FcmService
   ) {
     this.initializeApp();
   }
@@ -50,6 +53,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.listenAuthState();
+      this.listenToNotifications();
     });
   }
 
@@ -68,6 +72,19 @@ export class AppComponent {
         this.navCtrl.navigateRoot('schedule');
       }
       this.menuCtrl.enable(enable);
+    });
+  }
+
+  listenToNotifications() {
+    this.fcm.listenToNotifications()
+    .subscribe(async (msg) => {
+      console.log(msg);
+      const toast = await this.toastCtrl.create({
+        message: msg.body,
+        duration: 3000,
+        color: 'dark'
+      });
+      await toast.present();
     });
   }
 }

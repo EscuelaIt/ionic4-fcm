@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { Firebase } from '@ionic-native/firebase/ngx';
 
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -12,18 +13,42 @@ export class FcmService {
 
   constructor(
     private db: AngularFirestore,
-    private firebase: Firebase
+    private firebase: Firebase,
+    private platform: Platform
   ) {
     this.devicesCollection = this.db.collection('devices');
   }
 
   async getToken(userId: string) {
-    const token = await this.firebase.getToken();
+    let token;
+    if (this.platform.is('android')) {
+      token = await this.firebase.getToken();
+    }
+
+    if (this.platform.is('ios')) {
+      token = await this.firebase.getToken();
+      await this.firebase.grantPermission();
+    }
+
+    if (!this.platform.is('cordova')) {
+      // web push
+    }
+
+    this.registerToken(token, userId);
+  }
+
+  registerToken(token, userId) {
+    if (!token) {
+      return;
+    }
     const newDevice = {
       token,
       userId
     };
-    console.log(newDevice);
     this.devicesCollection.add(newDevice);
+  }
+
+  listenToNotifications() {
+    return this.firebase.onNotificationOpen();
   }
 }
